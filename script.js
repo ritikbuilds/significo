@@ -347,30 +347,56 @@ function lenis() {
 }
 
 function navHover() {
-  let navbar = document.querySelector(".navbar");
 
-  navbar.addEventListener("mouseenter", () => {
+  function handleEnter(){
     document.querySelector(".main").style.opacity = 0.2;
-  });
-
-  navbar.addEventListener("mouseleave", () => {
+  } 
+  
+  function handleLeave(){
     document.querySelector(".main").style.opacity = 1;
-  });
+  
+  }
+  
+  
+  function addHoverListeners() {
+    let navbar = document.querySelector(".navbar");
+    navbar.addEventListener("mouseenter", handleEnter);
+    navbar.addEventListener("mouseleave", handleLeave);
+  }
+  
+  function removeHoverListeners() {
+    let navbar = document.querySelector(".navbar");
+    navbar.removeEventListener("mouseenter", handleEnter);
+    navbar.removeEventListener("mouseleave", handleLeave);
+  }
+  
+  function handleResize() {
+    const main = document.querySelector(".main");
+    if (window.innerWidth >= 600) {
+      addHoverListeners();
+    } else {
+      removeHoverListeners();
+      main.style.opacity = 1; 
+    }
+  }
+  handleResize();
+  window.addEventListener("resize", handleResize);
+  
 }
 
 function underlineAnimation() {
   let underlines = document.querySelectorAll(".underline");
-
+  
   underlines.forEach((underline) => {
     underline.addEventListener("mouseenter", () => {
       gsap.to(underline, {
         "--width": "100%",
       });
     });
-
+    
     underline.addEventListener("mouseleave", () => {
       let tl = gsap.timeline();
-
+      
       tl.to(underline, {
         "--left": "none",
         "--right": 0,
@@ -385,8 +411,13 @@ function underlineAnimation() {
   });
 }
 
+function openMenu() {
+  document.querySelector(".menu-btn").addEventListener("click", () => {
+    document.querySelector(".menu").classList.toggle("open-menu");
+  });
+}
+
 lenis();
-navHover();
 textSplit();
 textAnimation();
 titleAnimation();
@@ -397,3 +428,6 @@ page2Animation();
 page1Animation();
 bodyColorChanger();
 underlineAnimation();
+navHover()
+openMenu();
+
